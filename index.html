@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fullscreen on key</title>
   <style>
     :root { color-scheme: light dark; }
-    body {
+    #fullscreen {
       margin: 0; font-family: system-ui, sans-serif; height: 100dvh;
       display: grid; place-items: center; background: #111; color: #eee;
     }
@@ -19,10 +16,10 @@
       border-radius: 6px; background: #222; font-weight: 600;
     }
   </style>
-</head>
-<body>
+
+<div id="fullscreen">
   <div id="app" tabindex="0">
-    Press <kbd>F</kbd> to toggle fullscreen for this box. Press <kbd>Esc</kbd> to exit.
+    Press <kbd>F</kbd> open. Press <kbd>Esc</kbd> to exit.
   </div>
 
   <script>
@@ -30,14 +27,14 @@
 
     function enterFullscreen(el) {
       if (el.requestFullscreen) return el.requestFullscreen();
-      if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();      // Safari
-      if (el.msRequestFullscreen) return el.msRequestFullscreen();              // Old IE/Edge
+      if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();     
+      if (el.msRequestFullscreen) return el.msRequestFullscreen();              
     }
 
     function exitFullscreen() {
       if (document.exitFullscreen) return document.exitFullscreen();
-      if (document.webkitExitFullscreen) return document.webkitExitFullscreen(); // Safari
-      if (document.msExitFullscreen) return document.msExitFullscreen();         // Old IE/Edge
+      if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+      if (document.msExitFullscreen) return document.msExitFullscreen();         
     }
 
     function fullscreenElement() {
@@ -55,8 +52,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
-        // Use `document.documentElement` to fullscreen the whole page instead:
-        // toggleFullscreen(document.documentElement);
+        
         toggleFullscreen(target);
       }
       if (e.key === 'Escape') {
@@ -75,5 +71,5 @@
     document.addEventListener('webkitfullscreenchange', updateMessage); // Safari
     updateMessage();
   </script>
-</body>
-</html>
+</div>
+
