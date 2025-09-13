@@ -54,12 +54,12 @@
       }
     });
 
-    function updateMessage() {
-      const active = Boolean(fullscreenElement());
-      target.textContent = active
-        ? '<iframe src="https://www.example.com" title="Example Website" width="600" height="400"></iframe>'
-        : 'Press F to open.';
-    }
+function updateMessage() {
+  const active = Boolean(fullscreenElement());
+  target.innerHTML = active
+    ? '<iframe src="https://www.example.com" title="Example Website" width="600" height="400"></iframe>'
+    : 'Press F to open.';
+}
 
     document.addEventListener('fullscreenchange', updateMessage);
     document.addEventListener('webkitfullscreenchange', updateMessage); // Safari
