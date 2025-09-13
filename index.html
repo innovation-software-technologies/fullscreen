@@ -31,12 +31,6 @@
       if (el.msRequestFullscreen) return el.msRequestFullscreen();              
     }
 
-    function exitFullscreen() {
-      if (document.exitFullscreen) return document.exitFullscreen();
-      if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
-      if (document.msExitFullscreen) return document.msExitFullscreen();         
-    }
-
     function fullscreenElement() {
       return document.fullscreenElement
           || document.webkitFullscreenElement
@@ -63,8 +57,8 @@
     function updateMessage() {
       const active = Boolean(fullscreenElement());
       target.textContent = active
-        ? 'In fullscreen. Press F or Esc to exit.'
-        : 'Press F to enter fullscreen for this box.';
+        ? 'In fullscreen. Press Esc to exit.'
+        : 'Press F to open.';
     }
 
     document.addEventListener('fullscreenchange', updateMessage);
