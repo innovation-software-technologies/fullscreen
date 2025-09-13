@@ -1,69 +1,112 @@
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <style>
-    :root { color-scheme: light dark; }
-    #fullscreen {
-      margin: 0; font-family: system-ui, sans-serif; height: 100dvh;
-      display: grid; place-items: center; background: #111; color: #eee;
-    }
-    #app {
-      padding: 2rem 2.5rem; border: 1px solid #444; border-radius: 12px;
-      background: #1a1a1a; text-align: center; line-height: 1.4;
-    }
-    kbd {
-      border: 1px solid #666; border-bottom-width: 2px; padding: 0.1rem 0.4rem;
-      border-radius: 6px; background: #222; font-weight: 600;
-    }
-  </style>
+<style>
+  :root { color-scheme: light dark; }
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #111;
+    color: #eee;
+    font-family: system-ui, sans-serif;
+  }
+
+  #fullscreen {
+    height: 100dvh;
+    display: grid;
+    place-items: center;
+    background: #111;
+  }
+
+  #app {
+    padding: 2rem 2.5rem;
+    border: 1px solid #444;
+    border-radius: 12px;
+    background: #1a1a1a;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  #iframeContainer {
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  #iframeContainer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  kbd {
+    border: 1px solid #666;
+    border-bottom-width: 2px;
+    padding: 0.1rem 0.4rem;
+    border-radius: 6px;
+    background: #222;
+    font-weight: 600;
+  }
+</style>
 
 <div id="fullscreen">
   <div id="app" tabindex="0">
-    Press <kbd>F</kbd> open. Press <kbd>Esc</kbd> to exit.
+    Press <kbd>F</kbd> to open. Press <kbd>Esc</kbd> to exit.
   </div>
-
-  <script>
-    const target = document.getElementById('app');
-
-    function enterFullscreen(el) {
-      if (el.requestFullscreen) return el.requestFullscreen();
-      if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();     
-      if (el.msRequestFullscreen) return el.msRequestFullscreen();              
-    }
-
-    function fullscreenElement() {
-      return document.fullscreenElement
-          || document.webkitFullscreenElement
-          || document.msFullscreenElement
-          || null;
-    }
-
-    function toggleFullscreen(el) {
-      if (fullscreenElement()) exitFullscreen();
-      else enterFullscreen(el);
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'f' || e.key === 'F') {
-        e.preventDefault();
-        
-        toggleFullscreen(target);
-      }
-      if (e.key === 'Escape') {
-        exitFullscreen();
-      }
-    });
-
-function updateMessage() {
-  const active = Boolean(fullscreenElement());
-  target.innerHTML = active
-    ? '<iframe src="https://www.example.com" title="Example Website" width="600" height="400"></iframe>'
-    : 'Press F to open.';
-}
-
-    document.addEventListener('fullscreenchange', updateMessage);
-    document.addEventListener('webkitfullscreenchange', updateMessage); // Safari
-    updateMessage();
-  </script>
+  <div id="iframeContainer">
+    <iframe src="https://www.example.com" title="Example Website"></iframe>
+  </div>
 </div>
 
+<script>
+  const app = document.getElementById('app');
+  const iframeContainer = document.getElementById('iframeContainer');
+
+  function enterFullscreen(el) {
+    if (el.requestFullscreen) return el.requestFullscreen();
+    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+  }
+
+  function exitFullscreen() {
+    if (document.exitFullscreen) return document.exitFullscreen();
+    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+    if (document.msExitFullscreen) return document.msExitFullscreen();
+  }
+
+  function fullscreenElement() {
+    return document.fullscreenElement
+        || document.webkitFullscreenElement
+        || document.msFullscreenElement
+        || null;
+  }
+
+  function toggleFullscreen(el) {
+    if (fullscreenElement()) {
+      exitFullscreen();
+    } else {
+      enterFullscreen(el);
+    }
+  }
+
+  function updateMessage() {
+    const active = Boolean(fullscreenElement());
+    app.style.display = active ? 'none' : 'block';
+    iframeContainer.style.display = active ? 'block' : 'none';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'f') {
+      e.preventDefault();
+      toggleFullscreen(iframeContainer);
+    }
+    if (e.key === 'Escape') {
+      exitFullscreen();
+    }
+  });
+
+  document.addEventListener('fullscreenchange', updateMessage);
+  document.addEventListener('webkitfullscreenchange', updateMessage);
+  updateMessage();
+</script>
